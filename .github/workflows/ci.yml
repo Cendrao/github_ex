@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+      - '!main'     # excludes main
+
+jobs:
+  build:
+
+    name: Build and test
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: "test"
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Elixir
+
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: '1.14.0' # Define the elixir version [required]
+        otp-version: '25.1.1' # Define the OTP version [required]
+        experimental-otp: true
+    - name: Restore dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Install dependencies
+      run: mix deps.get
+    - name: Compile
+      run: mix compile --warnings-as-errors
+    - name: Code Beauty
+      run: mix format --check-formatted
+    - name: Code Analysis
+      run: mix credo --strict
+    - name: Run tests
+      run: mix test
