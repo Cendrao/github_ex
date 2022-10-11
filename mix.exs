@@ -30,6 +30,7 @@ defmodule GithubEx.MixProject do
       {:tesla, "~> 1.4"},
 
       # Dev and Test deps
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
