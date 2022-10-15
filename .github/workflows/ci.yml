@@ -17,16 +17,15 @@ jobs:
       MIX_ENV: "test"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Elixir
 
-      uses: actions/setup-elixir@v1
+      uses: erlef/setup-beam@v1
       with:
-        elixir-version: '1.14.0' # Define the elixir version [required]
         otp-version: '25.1.1' # Define the OTP version [required]
-        experimental-otp: true
+        elixir-version: '1.14.0' # Define the elixir version [required]
     - name: Restore dependencies cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
