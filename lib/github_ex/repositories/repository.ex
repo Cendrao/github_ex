@@ -88,7 +88,18 @@ defmodule GithubEx.Repositories.Repository do
     :languages_url,
     :open_issues_count,
     :contents_url,
-    :watchers
+    :watchers,
+    :allow_rebase_merge,
+    :allow_merge_commit,
+    :squash_merge_commit_title,
+    :squash_merge_commit_message,
+    :merge_commit_message,
+    :allow_squash_merge,
+    :allow_auto_merge,
+    :delete_branch_on_merge,
+    :allow_update_branch,
+    :use_squash_pr_title_as_default,
+    :merge_commit_title
   ]
 
   @type t :: %__MODULE__{
@@ -174,6 +185,17 @@ defmodule GithubEx.Repositories.Repository do
           languages_url: String.t(),
           open_issues_count: integer(),
           contents_url: String.t(),
-          watchers: integer()
+          watchers: integer(),
+          allow_rebase_merge: boolean(),
+          allow_merge_commit: boolean(),
+          squash_merge_commit_title: boolean(),
+          squash_merge_commit_message: boolean(),
+          merge_commit_message: boolean(),
+          allow_squash_merge: boolean(),
+          allow_auto_merge: boolean(),
+          delete_branch_on_merge: boolean(),
+          allow_update_branch: boolean(),
+          use_squash_pr_title_as_default: boolean(),
+          merge_commit_title: boolean()
         }
 end

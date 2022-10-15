@@ -11,37 +11,6 @@ defmodule GithubEx.Repositories do
   @doc """
   Fetches and returns a Repository.
 
-  Given a repository name as a string in the patter `owner/name` will fetch the 
-  repository on GitHub and return it structure or an error if the request is not
-  successful.
-
-  ## Examples
-
-      iex> Repositories.fetch("elixir-lang/elixir")
-      iex> {:ok, %GithubEx.Repositories.Repository{
-        labels_url: "https://api.github.com/repos/elixir-lang/elixir/labels{/name}",
-        keys_url: "https://api.github.com/repos/elixir-lang/elixir/keys{/key_id}",
-        fork: false...
-        }
-      }
-
-      iex> Repositories.fetch("invalid-repo")
-      iex> {:error, :invalid_name}
-  """
-  @spec fetch(String.t()) :: {:ok, Repository.t()} | {:error, any()}
-  def fetch(repository_name) do
-    case normalize_repository_name(repository_name) do
-      [owner, name] ->
-        fetch(owner, name)
-
-      _ ->
-        {:error, :invalid_name}
-    end
-  end
-
-  @doc """
-  Fetches and returns a Repository.
-
   Given the owner and the name of a repository it  will fetch the repository on
   GitHub and return it structure or an error if the request is not successful.
 
@@ -60,8 +29,8 @@ defmodule GithubEx.Repositories do
 
   """
   @spec fetch(String.t(), String.t()) :: {:ok, Repository.t()} | {:error, any()}
-  def fetch(owner, name) do
-    case Client.get("/repos/#{owner}/#{name}") do
+  def fetch(owner, name, opts \\ []) do
+    case Client.get("/repos/#{owner}/#{name}", opts) do
       {:ok, %{status: 200, body: body}} ->
         repo = to_struct(body)
         {:ok, repo}
@@ -90,8 +59,8 @@ defmodule GithubEx.Repositories do
       iex> {:error, [500, "Internal Server Error"]}
   """
   @spec list() :: {:ok, list(Repository.t())} | {:error, any()}
-  def list do
-    case Client.get("/repositories") do
+  def list(opts \\ []) do
+    case Client.get("/repositories", opts) do
       {:ok, %{status: 200, body: body}} ->
         repos = Enum.map(body, &to_struct/1)
         {:ok, repos}
@@ -121,8 +90,8 @@ defmodule GithubEx.Repositories do
       iex> {:error, [404, "Not found"]}
   """
   @spec list_by_user(String.t()) :: {:ok, list(Repository.t())} | {:error, any()}
-  def list_by_user(username) do
-    case Client.get("/users/#{username}/repos") do
+  def list_by_user(username, opts \\ []) do
+    case Client.get("/users/#{username}/repos", opts) do
       {:ok, %{status: 200, body: body}} ->
         repos = Enum.map(body, &to_struct/1)
         {:ok, repos}
@@ -130,10 +99,6 @@ defmodule GithubEx.Repositories do
       context ->
         handle_error(context)
     end
-  end
-
-  defp normalize_repository_name(repository_name) do
-    String.split(repository_name, "/")
   end
 
   defp to_struct(attrs) do

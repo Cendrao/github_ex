@@ -16,7 +16,7 @@ defmodule GithubEx.RepositoriesTest do
           }
       end)
 
-      assert {:ok, %Repository{} = repository} = Repositories.fetch("elixir-lang", "elixir")
+      assert {:ok, %Repository{} = repository} = Repositories.fetch("elixir-lang", "elixir", [])
 
       assert repository.full_name == "elixir-lang/elixir"
       assert repository.id == 1_234_714
@@ -36,10 +36,6 @@ defmodule GithubEx.RepositoriesTest do
 
       assert {:error, [404, error]} = Repositories.fetch("non-existant", "repository")
       assert error["message"] == "Not Found"
-    end
-
-    test "with an incorrect repository name" do
-      assert {:error, :invalid_name} = Repositories.fetch("invalidname")
     end
   end
 
