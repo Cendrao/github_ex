@@ -27,7 +27,10 @@ defmodule GithubEx.MixProject do
     [
       {:hackney, "~> 1.17"},
       {:jason, ">= 1.0.0"},
-      {:tesla, "~> 1.4"}
+      {:tesla, "~> 1.4"},
+
+      # Dev and Test deps
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
 end
