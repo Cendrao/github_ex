@@ -11,7 +11,7 @@ defmodule GithubEx.Client do
     * `{"Accept", "application/vnd.github+json"}`
   """
 
-  @default_headers [{"User-Agent", "Githubex"}, {"Accept", "application/vnd.github+json"}]
+  alias GithubEx.Configuration
 
   @doc """
   Makes a GET request to the given URL considering the configuration in config.exs 
@@ -34,9 +34,9 @@ defmodule GithubEx.Client do
   end
 
   defp client(opts) do
-    config = Application.get_env(:github_ex, :github)
+    config = Configuration.fetch(opts)
 
-    headers = maybe_add_authorization_header(@default_headers, opts)
+    headers = config |> build_headers() |> maybe_add_authorization_header(opts)
 
     middleware = [
       {Tesla.Middleware.BaseUrl, config.base_url},
@@ -45,6 +45,10 @@ defmodule GithubEx.Client do
     ]
 
     Tesla.client(middleware)
+  end
+
+  defp build_headers(config) do
+    [{"User-Agent", config.user_agent}, {"Accept", "application/vnd.github+json"}]
   end
 
   defp maybe_add_authorization_header(headers, opts) do
