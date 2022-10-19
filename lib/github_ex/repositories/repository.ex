@@ -1,4 +1,10 @@
 defmodule GithubEx.Repositories.Repository do
+  @moduledoc """
+  Representation of a Github repository.
+
+  It is the main entity in Github which contains the most important information
+  about a project.
+  """
   defstruct [
     :labels_url,
     :keys_url,

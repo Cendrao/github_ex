@@ -1,4 +1,13 @@
 defmodule GithubEx.Client do
+  @moduledoc """
+  Github Tesla client.
+
+  It handles the HTTP calls to Github API. Can be used to make a request that is
+  not implemented on the library, for example:
+
+
+  GithubEx.Client.get("/licenses")
+  """
   use Tesla
 
   plug(Tesla.Middleware.BaseUrl, base_url())
