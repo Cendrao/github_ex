@@ -8,7 +8,7 @@ defmodule GithubEx.ClientTest do
       Tesla.Mock.mock(fn
         %{method: :get, url: "http://localhost/octocat", headers: headers} ->
           assert [
-                   {"User-Agent", "Githubex"},
+                   {"User-Agent", "GithubEx.Test"},
                    {"Accept", "application/vnd.github+json"}
                  ] == headers
 
@@ -25,7 +25,7 @@ defmodule GithubEx.ClientTest do
       Tesla.Mock.mock(fn
         %{method: :get, url: "http://localhost/octocat", headers: headers} ->
           assert [
-                   {"User-Agent", "Githubex"},
+                   {"User-Agent", "GithubEx.Test"},
                    {"Accept", "application/vnd.github+json"},
                    {"Authorization", "Bearer A_RANDOM_ACCESS_TOKEN"}
                  ] == headers
